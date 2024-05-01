@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Git commands
+        if: github.ref_name == 'main'
+        run: |
+             set -x
+             # Fetch the latest main branch from the remote repository:
+             git fetch origin main:main
+             
+             git status
+
+             # Check if the current HEAD is a commit on the main branch:
+             if ! git merge-base --is-ancestor HEAD main; then
+                 echo "Error: Current commit is not a valid commit from 'main' branch." >&2
+                 exit 1
+             fi
