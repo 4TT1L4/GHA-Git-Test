@@ -21,7 +21,7 @@ jobs:
         run: |
              set -x
              # Fetch the latest main branch from the remote repository:
-             git fetch origin main:main
+             git fetch
              
              git status
 
